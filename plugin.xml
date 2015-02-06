@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e107Plugin name="Nodejs" lan="LAN_PLUGIN__NODEJS_NAME" version="1.0" date="2015-02-05" compatibility="2.0" installRequired="true">
+    <author name="lonalore" url="http://lonalore.hu"/>
+    <summary lan="LAN_PLUGIN__NODEJS_SUMM">Node.js integration</summary>
+    <description lan="LAN_PLUGIN__NODEJS_DESC">It provides an API that other plugins can use to add real-time capabilities to e107, specifically enabling pushing updates to open connected clients.</description>
+    <keywords>
+        <word>nodejs</word>
+        <word>server</word>
+        <word>api</word>
+    </keywords>
+    <category>tools</category>
+    <copyright></copyright>
+    <adminLinks>
+        <link url="admin_config.php" description="" icon="images/nodejs_32.png" iconSmall="images/nodejs_16.png" primary="true">LAN_CONFIGURE</link>
+    </adminLinks>
+    <pluginPrefs>
+        <pref name='nodejs_protocol'>1</pref>
+        <pref name='nodejs_host'>localhost</pref>
+        <pref name='nodejs_port'>8000</pref>
+        <pref name='nodejs_resource'>/socket.io</pref>
+        <pref name='nodejs_service_key'></pref>
+        <pref name='nodejs_log_http_errors'>1</pref>
+    </pluginPrefs>
+</e107Plugin>
