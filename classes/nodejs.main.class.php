@@ -40,9 +40,9 @@ class Nodejs extends NodejsMain {
     // Http request went ok, process Node.js server response.
     if ($node_response = NodejsMain::sendContentToken($message)) {
       if ($node_response->status == 'ok') {
-        // We always set this in drupal.settings, even though Ajax requests will not
-        // see it. It's a bit ugly, but it means that setting the tokens for full
-        // page requests will just work.
+        // We always set this in e107Nodejs.settings, even though Ajax requests
+        // will not see it. It's a bit ugly, but it means that setting the
+        // tokens for full page requests will just work.
         // TODO: Add this to the e107Nodejs.settings.
         // array(array('nodejs' => array('contentTokens' => array($channel => $message->token))), array('type' => 'setting'));
 
