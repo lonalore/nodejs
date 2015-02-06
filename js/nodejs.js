@@ -128,4 +128,8 @@
     e107Nodejs.Nodejs.socket.emit('authenticate', authMessage);
   };
 
+  if (!e107Nodejs.Nodejs.socket) {
+    e107Nodejs.Nodejs.connect();
+  }
+
 })(jQuery);
