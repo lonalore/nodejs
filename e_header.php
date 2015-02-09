@@ -35,7 +35,7 @@ class nodejs_e_header extends NodejsMain {
       }
 
       $socket_io_config = self::get_socketio_js_config($nodejs_config);
-      $js_config = 'var e107Nodejs = e107Nodejs || { settings: { nodejs: ' . json_encode($nodejs_config) . ' } };';
+      $js_config = 'var e107Nodejs = e107Nodejs || { settings: ' . json_encode($nodejs_config) . ' };';
 
       e107::js('url', $socket_io_config['path'], NULL, 2);
       e107::js('inline', $js_config, NULL, 3);

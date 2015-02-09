@@ -77,41 +77,27 @@
   };
 
   e107Nodejs.Nodejs.connect = function () {
-    var scheme = e107Nodejs.settings.nodejs.client.secure ? 'https' : 'http',
-      url = scheme + '://' + e107Nodejs.settings.nodejs.client.host + ':' + e107Nodejs.settings.nodejs.client.port;
+    var scheme = e107Nodejs.settings.client.secure ? 'https' : 'http',
+      url = scheme + '://' + e107Nodejs.settings.client.host + ':' + e107Nodejs.settings.client.port;
 
-    e107Nodejs.settings.nodejs.connectTimeout = e107Nodejs.settings.nodejs.connectTimeout || 5000;
+    e107Nodejs.settings.connectTimeout = e107Nodejs.settings.connectTimeout || 5000;
 
     if (typeof io === 'undefined') {
       return false;
     }
 
-    e107Nodejs.Nodejs.socket = io.connect(url, {'connect timeout': e107Nodejs.settings.nodejs.connectTimeout});
+    e107Nodejs.Nodejs.socket = io.connect(url, {'connect timeout': e107Nodejs.settings.connectTimeout});
     e107Nodejs.Nodejs.socket.on('connect', function () {
       e107Nodejs.Nodejs.sendAuthMessage();
       e107Nodejs.Nodejs.runSetupHandlers('connect');
-      if (e107Nodejs.ajax != undefined) {
-        // Monkey-patch e107Nodejs.ajax.prototype.beforeSerialize to auto-magically
-        // send sessionId for AJAX requests so we can exclude the current browser
-        // window from resulting notifications. We do this so that modules can hook
-        // in to other modules ajax requests without having to patch them.
-        e107Nodejs.Nodejs.originalBeforeSerialize = e107Nodejs.ajax.prototype.beforeSerialize;
-        e107Nodejs.ajax.prototype.beforeSerialize = function (element_settings, options) {
-          options.data['nodejs_client_socket_id'] = e107Nodejs.Nodejs.socket.sessionid;
-          return e107Nodejs.Nodejs.originalBeforeSerialize(element_settings, options);
-        };
-      }
     });
 
     e107Nodejs.Nodejs.socket.on('message', e107Nodejs.Nodejs.runCallbacks);
 
     e107Nodejs.Nodejs.socket.on('disconnect', function () {
       e107Nodejs.Nodejs.runSetupHandlers('disconnect');
-      if (e107Nodejs.ajax != undefined) {
-        e107Nodejs.ajax.prototype.beforeSerialize = e107Nodejs.Nodejs.originalBeforeSerialize;
-      }
     });
-    setTimeout("e107Nodejs.Nodejs.checkConnection()", e107Nodejs.settings.nodejs.connectTimeout + 250);
+    setTimeout("e107Nodejs.Nodejs.checkConnection()", e107Nodejs.settings.connectTimeout + 250);
   };
 
   e107Nodejs.Nodejs.checkConnection = function () {
@@ -122,8 +108,8 @@
 
   e107Nodejs.Nodejs.sendAuthMessage = function () {
     var authMessage = {
-      authToken: e107Nodejs.settings.nodejs.authToken,
-      contentTokens: e107Nodejs.settings.nodejs.contentTokens
+      authToken: e107Nodejs.settings.authToken,
+      contentTokens: e107Nodejs.settings.contentTokens
     };
     e107Nodejs.Nodejs.socket.emit('authenticate', authMessage);
   };
