@@ -422,14 +422,8 @@ class Nodejs extends NodejsMain {
    */
   public static function auth_check_callback($auth_token) {
     $sql = e107::getDb();
-    $result = $sql->retrieve('online', 'online_user_id', 'MD5(online_ip) = "' . $auth_token . '"');
-
-    if ($result) {
-      $parts = explode(".", $result);
-      return (int) $parts[0];
-    }
-
-    return 0;
+    $result = $sql->retrieve('nodejs_sessions', 'uid', 'MD5(sid)="' . $auth_token . '"');
+    return $result;
   }
 
   /**
@@ -817,8 +811,11 @@ class NodejsMain {
    * Get an auth token for the current user.
    */
   public static function auth_get_token() {
-    $online_ip = e107::getIPHandler()->getIP(FALSE);
-    return md5($online_ip);
+    if (session_status() == PHP_SESSION_NONE) {
+      session_start();
+    }
+
+    return md5(session_id());
   }
 
   /**
