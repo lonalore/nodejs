@@ -48,8 +48,8 @@ function nodejs_send_content_channel_token($channel, $notify_on_disconnect = FAL
     else {
       $msg = 'Error sending content channel token for channel "' . $channel . '". Node.js server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -74,8 +74,8 @@ function nodejs_get_content_channel_users($channel) {
     if (isset($node_response->error)) {
       $msg = 'Error getting content channel users for channel "' . $channel . '" on the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -108,8 +108,8 @@ function nodejs_kick_user($uid) {
     else {
       $msg = 'Error kicking uid "' . $uid . '" from the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -136,8 +136,8 @@ function nodejs_logout_user($token) {
     else {
       $msg = 'Error logging out token "' . $token . '" from the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -164,8 +164,8 @@ function nodejs_set_user_presence_list($uid, array $uids) {
     else {
       $msg = 'Error setting user presence list for "' . $uid . '" on the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -273,8 +273,8 @@ function nodejs_add_channel($channel) {
     else {
       $msg = 'Error adding channel to the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -301,8 +301,8 @@ function nodejs_check_channel($channel) {
     else {
       $msg = 'Error checking channel on the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -328,8 +328,8 @@ function nodejs_remove_channel($channel) {
     else {
       $msg = 'Error removing channel from the Node.js server. Server response: ' . $node_response->error;
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $node_response, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $node_response, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -416,13 +416,27 @@ function nodejs_auth_check($message) {
  */
 function nodejs_auth_check_callback($auth_token) {
   $sql = e107::getDb();
-  $sql->select('nodejs_sessions', 'uid', 'MD5(sid)="' . $auth_token . '"');
+  $uid = $sql->retrieve('nodejs_sessions', 'uid', 'MD5(sid)="' . $auth_token . '" ORDER BY uid DESC LIMIT 1');
+  return $uid;
+}
 
-  while($row = $sql->fetch()) {
-    return (int) $row['uid'];
-  }
+/**
+ * Handler function to save active sessions to database.
+ */
+function nodejs_session_db_handler() {
+  $db = e107::getDb('nodejssessions');
 
-  return FALSE;
+  $db->delete("nodejs_sessions", "timestamp <= (UNIX_TIMESTAMP() - 6*60*60)");
+
+  // Update last seen on every page load.
+  $insert = array(
+    'uid' => USERID,
+    'sid' => session_id(),
+    'timestamp' => time(),
+  );
+
+  // Insert/replace if there is a current record.
+  $db->replace('nodejs_sessions', $insert);
 }
 
 /**
@@ -478,8 +492,8 @@ function nodejs_remove_user_from_channel($uid, $channel) {
 
       $msg = 'Error removing user with uid: ' . $params['uid'] . ' from channel ' . $params['channel'] . ' on the Node.js server. Server response: ' . $params['error'];
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $params, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $params, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -512,8 +526,8 @@ function nodejs_add_user_to_channel($uid, $channel) {
 
       $msg = 'Error adding user with uid: ' . $params['uid'] . ' to channel ' . $params['channel'] . ' on the Node.js server. Server response: ' . $params['error'];
 
-      // $log = e107::getLog();
-      // $log->add('nodejs', $params, E_LOG_INFORMATIVE, $msg);
+      $log = e107::getLog();
+      $log->add('NODEJS', (array) $params, E_LOG_INFORMATIVE, $msg);
 
       return FALSE;
     }
@@ -1512,8 +1526,8 @@ class Nodejs {
           $log_message = 'Error reaching the Node.js server at "' . $params['url'] . '" with data "' . $params['data'] . '": [' . $params['code'] . '] ' . $params['error'] . '.';
         }
 
-        // $log = e107::getLog();
-        // $log->add('nodejs', $params, E_LOG_INFORMATIVE, $log_message);
+        $log = e107::getLog();
+        $log->add('NODEJS', (array) $params, E_LOG_INFORMATIVE, $log_message);
       }
 
       return FALSE;

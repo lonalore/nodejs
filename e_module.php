@@ -18,22 +18,8 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
-$db = e107::getDb('nodejssessions');
-
-// Update last seen on every page load.
-$updated = $db->update('nodejs_sessions', 'timestamp=' . time() . ' WHERE sid=' . session_id());
-
-// If no updated record.
-if (!$updated) {
-  $insert = array(
-    'uid' => USERID,
-    'sid' => session_id(),
-    'timestamp' => time(),
-  );
-
-  // Insert/replace if there is a current record.
-  $db->replace('nodejs_sessions', $insert);
-}
+// Update session in database.
+nodejs_session_db_handler();
 
 /**
  * User logout listener.

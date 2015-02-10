@@ -75,8 +75,9 @@ class NodejsListener {
         }
     }
 
-    header('Content-Type: application/json');
     $var = $response ? $response : array('error' => 'Not implemented');
+
+    header('Content-Type: application/json');
     echo nodejs_json_encode($var);
     exit();
   }
