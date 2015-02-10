@@ -8,9 +8,7 @@
  * included in Ajax calls.
  */
 
-// We include this plugin file every time, so we provide the ability to use
-// Nodejs class for other plugins without file including.
-require_once('classes/nodejs.main.class.php');
+require_once('classes/nodejs.main.php');
 
 // Register events.
 $event = e107::getEvent();
@@ -45,6 +43,6 @@ if (!$updated) {
  */
 function nodejs_event_logout_callback($data) {
   if (isset($_SESSION['nodejs_config']['authToken'])) {
-    Nodejs::logout_user($_SESSION['nodejs_config']['authToken']);
+    nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
   }
 }

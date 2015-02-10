@@ -4,29 +4,31 @@
  * Provide a listener class to handle all messages from Node.js server.
  */
 
+require_once('../../class2.php');
+
 /**
  * Class NodejsListener.
  */
-class NodejsListener extends Nodejs {
+class NodejsListener {
 
   /**
    * Constructor function.
    */
   public function __construct() {
-    if (!isset($_POST['serviceKey']) || !Nodejs::is_valid_service_key($_POST['serviceKey'])) {
-      header('Content-Type', 'application/json');
-      echo json_encode(array('error' => 'Invalid service key.'));
+    if (!isset($_POST['serviceKey']) || !nodejs_is_valid_service_key($_POST['serviceKey'])) {
+      header('Content-Type: application/json');
+      echo nodejs_json_encode(array('error' => 'Invalid service key.'));
       exit();
     }
 
     if (!isset($_POST['messageJson'])) {
-      header('Content-Type', 'application/json');
-      echo json_encode(array('error' => 'No message.'));
+      header('Content-Type: application/json');
+      echo nodejs_json_encode(array('error' => 'No message.'));
       exit();
     }
 
-    $message = json_decode($_POST['messageJson']);
-    self::message_handler($message);
+    $message = json_decode($_POST['messageJson'], TRUE);
+    $this->message_handler($message);
   }
 
   /**
@@ -34,21 +36,24 @@ class NodejsListener extends Nodejs {
    */
   public function message_handler($message) {
     $response = array();
+
     switch ($message['messageType']) {
       case 'authenticate':
-        $response = Nodejs::auth_check($message);
+        $response = nodejs_auth_check($message);
         break;
 
       case 'userOffline':
         if (empty($message['uid'])) {
           $response['error'] = 'Missing uid for userOffline message.';
         }
-        else if (!preg_match('/^\d+$/', $message['uid'])) {
-          $response['error'] = 'Invalid (!/^\d+$/) uid for userOffline message.';
-        }
         else {
-          Nodejs::user_set_offline($message['uid']);
-          $response['message'] = "User {$message['uid']} set offline.";
+          if (!preg_match('/^\d+$/', $message['uid'])) {
+            $response['error'] = 'Invalid (!/^\d+$/) uid for userOffline message.';
+          }
+          else {
+            nodejs_user_set_offline($message['uid']);
+            $response['message'] = "User {$message['uid']} set offline.";
+          }
         }
         break;
 
@@ -57,12 +62,12 @@ class NodejsListener extends Nodejs {
 
         // TODO: Ability to define custom message callbacks by other plugins.
         /**
-        foreach ($modules as $module) {
-          $function = $module . '_nodejs_message_callback';
-          if (is_array($function($message['messageType']))) {
-            $handlers += $function($message['messageType']);
-          }
-        }
+         * foreach ($modules as $module) {
+         * $function = $module . '_nodejs_message_callback';
+         * if (is_array($function($message['messageType']))) {
+         * $handlers += $function($message['messageType']);
+         * }
+         * }
          */
 
         foreach ($handlers as $callback) {
@@ -70,8 +75,9 @@ class NodejsListener extends Nodejs {
         }
     }
 
-    header('Content-Type', 'application/json');
-    echo json_encode($response ? $response : array('error' => 'Not implemented'));
+    header('Content-Type: application/json');
+    $var = $response ? $response : array('error' => 'Not implemented');
+    echo nodejs_json_encode($var);
     exit();
   }
 

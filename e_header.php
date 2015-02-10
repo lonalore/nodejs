@@ -10,16 +10,14 @@ if (!defined('e107_INIT')) {
 }
 
 // Load required main class of plugin.
-require_once("classes/nodejs.main.class.php");
+require_once("classes/nodejs.main.php");
 
 /**
  * Class nodejs_e_header.
  */
-class nodejs_e_header extends NodejsMain {
+class nodejs_e_header {
 
   function __construct() {
-    NodejsMain::initConfig();
-
     self::include_components();
   }
 
@@ -28,14 +26,14 @@ class nodejs_e_header extends NodejsMain {
    */
   function include_components() {
     if (self::include_components_check()) {
-      $_SESSION['nodejs_config'] = $nodejs_config = NodejsMain::get_config();
+      $_SESSION['nodejs_config'] = $nodejs_config = nodejs_get_config();
 
       if (isset($nodejs_config['serviceKey'])) {
         unset($nodejs_config['serviceKey']);
       }
 
       $socket_io_config = self::get_socketio_js_config($nodejs_config);
-      $js_config = 'var e107Nodejs = e107Nodejs || { settings: ' . json_encode($nodejs_config) . ' };';
+      $js_config = 'var e107Nodejs = e107Nodejs || { settings: ' . nodejs_json_encode($nodejs_config) . ' };';
 
       e107::js('url', $socket_io_config['path'], NULL, 2);
       e107::js('inline', $js_config, NULL, 3);
