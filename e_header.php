@@ -40,8 +40,8 @@ class nodejs_e_header {
       e107::js('nodejs', 'js/nodejs.js', 'jquery', 4);
 
       // TODO: Provide ability to add custom js handlers.
-      foreach (self::get_js_handlers() as $handler_file) {
-        e107::js('url', $handler_file, NULL, 5);
+      foreach (self::get_js_handlers() as $handler) {
+        e107::js($handler['plugin'], $handler['file'], NULL, 5);
       }
     }
   }
@@ -91,6 +91,7 @@ class nodejs_e_header {
    */
   function get_js_handlers() {
     $handlers = array();
+    $handlers = e107::getEvent()->trigger('nodejs-js-handlers', $handlers);
     return $handlers;
   }
 }
