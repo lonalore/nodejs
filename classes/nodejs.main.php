@@ -456,8 +456,8 @@ function nodejs_auth_check($message)
 			}
 		}
 
-		// TODO: Get the list of users who can see presence notifications about me.
-		$auth_user->presenceUids = array_unique(array());
+		// Get the list of users who can see presence notifications about me.
+		$auth_user->presenceUids = array_unique(array(nodejs_get_user_presence_list($auth_user)));
 
 		$nodejs_config = nodejs_get_config();
 		$auth_user->serviceKey = $nodejs_config['serviceKey'];
@@ -530,6 +530,62 @@ function nodejs_get_custom_channels()
 	}
 
 	return $channels;
+}
+
+/**
+ * Get a list of users who can see presence notifications about me.
+ */
+function nodejs_get_user_presence_list($account)
+{
+	$sql = e107::getDb();
+
+	$users = array();
+	$enabledPlugins = array();
+
+	// Get list of enabled plugins.
+	$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
+	while ($row = $sql->fetch())
+	{
+		if ($row['plugin_installflag'] == 1)
+		{
+			$enabledPlugins[] = $row['plugin_path'];
+		}
+	}
+
+	$addonList = e107::getPlugConfig('nodejs')->get('nodejs_addon_list', array());
+	foreach ($addonList as $plugin)
+	{
+		if (in_array($plugin, $enabledPlugins))
+		{
+			$file = e_PLUGIN . $plugin . '/e_nodejs.php';
+
+			if (is_readable($file))
+			{
+				e107_require_once($file);
+				$addonClass = $plugin . '_nodejs';
+
+				if (class_exists($addonClass))
+				{
+					$addon = new $addonClass();
+
+					if (method_exists($addon, 'jsHandlers'))
+					{
+						$result = $addon->userPresenceList($account);
+						if (isset($result) && is_array($result))
+						{
+							$users = array_merge_recursive($users, $result);
+						}
+						elseif (isset($result))
+						{
+							$users[] = $result;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return $users;
 }
 
 /**
