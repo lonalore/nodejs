@@ -6,6 +6,9 @@
 
 define('LAN_AC_NODEJS_01', 'Settings');
 define('LAN_AC_NODEJS_02', 'Node.js server');
+define('LAN_AC_NODEJS_03', 'Scan plugins');
+define('LAN_AC_NODEJS_04', 'Scan plugin directories for additional Node.js addons');
+define('LAN_AC_NODEJS_05', 'Scanning plugin directories was successful. Number of founded addon files: [summ]');
 
 define('LAN_AI_NODEJS_01', 'Protocol used by Node.js server');
 define('LAN_AI_NODEJS_02', 'Node.js server host');
