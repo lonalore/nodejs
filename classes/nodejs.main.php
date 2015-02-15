@@ -491,7 +491,7 @@ function nodejs_get_custom_channels()
 {
 	$sql = e107::getDb();
 
-	$handlers = array();
+	$channels = array();
 	$enabledPlugins = array();
 
 	// Get list of enabled plugins.
@@ -522,14 +522,14 @@ function nodejs_get_custom_channels()
 
 					if (method_exists($addon, 'jsHandlers'))
 					{
-						$handlers[$plugin] = (array)$addon->userChannels();
+						$channels[$plugin] = (array)$addon->userChannels();
 					}
 				}
 			}
 		}
 	}
 
-	return $handlers;
+	return $channels;
 }
 
 /**
