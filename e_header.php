@@ -136,9 +136,14 @@ class nodejs_e_header
 				{
 					e107_require_once($file);
 					$addonClass = $plugin . '_nodejs';
-					$addon = new $addonClass();
 
-					$handlers[$plugin] = (array)$addon->jsHandlers();
+					if (class_exists($addonClass)) {
+						$addon = new $addonClass();
+
+						if (method_exists($addon, 'jsHandlers')) {
+							$handlers[$plugin] = (array)$addon->jsHandlers();
+						}
+					}
 				}
 			}
 		}
