@@ -127,16 +127,16 @@ class nodejs_admin_scan_ui extends e_admin_ui
 
 		foreach ($pluginList as $p)
 		{
-			$p['path'] = substr(str_replace(e_PLUGIN, "", $p['path']), 0, -1);
+			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
 			$plugin_path = $p['path'];
 
-			if (is_readable(e_PLUGIN . $plugin_path . "/e_nodejs.php"))
+			if (is_readable(e_PLUGIN . $plugin_path . '/e_nodejs.php'))
 			{
 				$addonsList[] = $plugin_path;
 			}
 		}
 
-		e107::getPlugConfig('nodejs')->set('nodejs_addon_list', $addonsList);
+		e107::getPlugConfig('nodejs')->set('nodejs_addon_list', $addonsList)->save();
 
 		$summ = count($addonsList);
 		$message = str_replace('[summ]', $summ, LAN_AC_NODEJS_05);
