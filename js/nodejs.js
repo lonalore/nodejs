@@ -114,8 +114,12 @@
     e107Nodejs.Nodejs.socket.emit('authenticate', authMessage);
   };
 
-  if (!e107Nodejs.Nodejs.socket) {
-    e107Nodejs.Nodejs.connect();
-  }
+  $(document).ready(function() {
+    if (!e107Nodejs.Nodejs.socket) {
+      setTimeout(function () {
+        e107Nodejs.Nodejs.connect();
+      }, 1000);
+    }
+  });
 
 })(jQuery);

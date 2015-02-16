@@ -457,7 +457,7 @@ function nodejs_auth_check($message)
 		}
 
 		// Get the list of users who can see presence notifications about me.
-		$auth_user->presenceUids = array_unique(array(nodejs_get_user_presence_list($auth_user)));
+		$auth_user->presenceUids = array_unique(nodejs_get_user_presence_list($auth_user));
 
 		$nodejs_config = nodejs_get_config();
 		$auth_user->serviceKey = $nodejs_config['serviceKey'];
@@ -480,7 +480,13 @@ function nodejs_auth_check($message)
 function nodejs_auth_check_callback($auth_token)
 {
 	$sql = e107::getDb();
-	$uid = $sql->retrieve('nodejs_sessions', 'uid', 'MD5(sid)="' . $auth_token . '" ORDER BY uid DESC LIMIT 1');
+	$result = $sql->gen("SELECT uid FROM #nodejs_sessions WHERE MD5(sid) = '" . $auth_token . "' ORDER BY uid DESC LIMIT 1 ");
+
+	$uid = FALSE;
+	while ($row = $sql->fetch()) {
+		$uid = (int) $row['uid'];
+	}
+
 	return $uid;
 }
 
@@ -520,9 +526,13 @@ function nodejs_get_custom_channels()
 				{
 					$addon = new $addonClass();
 
-					if (method_exists($addon, 'jsHandlers'))
+					if (method_exists($addon, 'userChannels'))
 					{
-						$channels[$plugin] = (array)$addon->userChannels();
+						$return = $addon->userChannels();
+
+						if (is_array($return)) {
+							$channels[$plugin] = $return;
+						}
 					}
 				}
 			}
@@ -568,7 +578,7 @@ function nodejs_get_user_presence_list($account)
 				{
 					$addon = new $addonClass();
 
-					if (method_exists($addon, 'jsHandlers'))
+					if (method_exists($addon, 'userPresenceList'))
 					{
 						$result = $addon->userPresenceList($account);
 						if (isset($result) && is_array($result))
@@ -595,17 +605,24 @@ function nodejs_session_db_handler()
 {
 	$db = e107::getDb('nodejssessions');
 
-	$db->delete("nodejs_sessions", "timestamp <= (UNIX_TIMESTAMP() - 6*60*60)");
+	$db->delete('nodejs_sessions', 'timestamp <= (UNIX_TIMESTAMP() - 6*60*60)');
 
 	// Update last seen on every page load.
-	$insert = array(
+	$updated = $db->update('nodejs_sessions', array(
 		'uid' => USERID,
-		'sid' => session_id(),
 		'timestamp' => time(),
-	);
+		'WHERE' => 'sid="' . session_id() . '"',
+	));
 
-	// Insert/replace if there is a current record.
-	$db->replace('nodejs_sessions', $insert);
+	if (!$updated) {
+		$data = array(
+			'uid' => USERID,
+			'sid' => session_id(),
+			'timestamp' => time(),
+		);
+
+		$db->insert('nodejs_sessions', $data);
+	}
 }
 
 /**
@@ -778,10 +795,9 @@ function nodejs_auth_get_token()
  *
  * @return string
  */
-function nodejs_get_url($callback = '/')
+function nodejs_get_url($config, $callback = '')
 {
-	$config = nodejs_get_config();
-	return $config['nodejs']['scheme'] . '://' . $config['nodejs']['host'] . ':' . $config['nodejs']['port'] . $callback;
+	return $config['nodejs']['scheme'] . '://' . $config['nodejs']['host'] . ':' . $config['nodejs']['port'] . '/' . $callback;
 }
 
 /**
@@ -1571,7 +1587,7 @@ class Nodejs
 		{
 			self::$config = nodejs_get_config();
 			self::$headers = array('NodejsServiceKey' => self::$config['serviceKey']);
-			self::$baseUrl = nodejs_get_url(e_PLUGIN_ABS . 'nodejs/');
+			self::$baseUrl = nodejs_get_url(self::$config);
 		}
 	}
 
@@ -1801,6 +1817,9 @@ class Nodejs
 
 		$response = nodejs_http_request(self::$baseUrl . $url, $options);
 
+		$log = e107::getLog();
+		$log->add('NODEJS', (array)$response, E_LOG_INFORMATIVE, '');
+
 		// If a http error occurred, and logging of http errors is enabled, log it.
 		if (isset($response->error))
 		{
@@ -1827,6 +1846,6 @@ class Nodejs
 		}
 
 		// No errors, so return Node.js server response.
-		return json_decode($response->data);
+		return json_decode($response->data, true);
 	}
 }

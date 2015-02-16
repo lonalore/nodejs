@@ -8,7 +8,7 @@
  * included in Ajax calls.
  */
 
-require_once('classes/nodejs.main.php');
+e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
 
 // Register events.
 $event = e107::getEvent();
@@ -29,6 +29,6 @@ nodejs_session_db_handler();
  */
 function nodejs_event_logout_callback($data) {
   if (isset($_SESSION['nodejs_config']['authToken'])) {
-    nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
+    $res = nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
   }
 }

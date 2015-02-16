@@ -11,7 +11,7 @@ if (!defined('e107_INIT'))
 }
 
 // Load required main class of plugin.
-require_once("classes/nodejs.main.php");
+e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
 
 /**
  * Class nodejs_e_header.
@@ -30,6 +30,7 @@ class nodejs_e_header
 	 */
 	function include_components()
 	{
+		register_shutdown_function(array('Nodejs', 'sendMessages'));
 		if (self::include_components_check())
 		{
 			$_SESSION['nodejs_config'] = $nodejs_config = nodejs_get_config();
@@ -70,7 +71,7 @@ class nodejs_e_header
 		$valid_page = true;
 
 		// TODO: Provide ability to exclude anonymous users.
-		if ($authenticated_users_only = false)
+		if ($authenticated_users_only = true)
 		{
 			$valid_user = USERID > 0;
 		}

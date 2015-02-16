@@ -6,6 +6,8 @@
 
 require_once('../../class2.php');
 
+e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
+
 /**
  * Class NodejsListener.
  */
@@ -32,6 +34,10 @@ class NodejsListener
 		}
 
 		$message = json_decode($_POST['messageJson'], true);
+
+		$log = e107::getLog();
+		$log->add('NODEJS', $message, E_LOG_INFORMATIVE,'');
+
 		$this->message_handler($message);
 	}
 
@@ -96,6 +102,9 @@ class NodejsListener
 
 		$var = $response ? $response : array('error' => 'Not implemented');
 
+		$log = e107::getLog();
+		$log->add('NODEJS', (array) $var, E_LOG_INFORMATIVE,'');
+
 		header('Content-Type: application/json');
 		echo nodejs_json_encode($var);
 		exit();
@@ -122,7 +131,8 @@ class NodejsListener
 			}
 		}
 
-		$addonList = e107::getPlugConfig('nodejs')->get('nodejs_addon_list', array());
+		$addonList = e107::getPlugConfig('nodejs')
+										 ->get('nodejs_addon_list', array());
 		foreach ($addonList as $plugin)
 		{
 			if (in_array($plugin, $enabledPlugins))
@@ -138,9 +148,13 @@ class NodejsListener
 					{
 						$addon = new $addonClass();
 
-						if (method_exists($addon, 'jsHandlers'))
+						if (method_exists($addon, 'msgHandlers'))
 						{
-							$handlers[$plugin] = (array)$addon->msgHandlers();
+							$return = $addon->msgHandlers();
+							if (is_array($return))
+							{
+								$handlers[$plugin] = $return;
+							}
 						}
 					}
 				}
@@ -149,7 +163,6 @@ class NodejsListener
 
 		return $handlers;
 	}
-
 }
 
 // Class installation.
