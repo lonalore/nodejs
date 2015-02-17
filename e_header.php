@@ -30,10 +30,9 @@ class nodejs_e_header
 	 */
 	function include_components()
 	{
-		register_shutdown_function(array('Nodejs', 'sendMessages'));
 		if (self::include_components_check())
 		{
-			$_SESSION['nodejs_config'] = $nodejs_config = nodejs_get_config();
+			$nodejs_config = nodejs_get_config();
 
 			if (isset($nodejs_config['serviceKey']))
 			{
@@ -96,8 +95,8 @@ class nodejs_e_header
 		if (!$socket_io_config['path'])
 		{
 			$socket_io_config['path'] = $nodejs_config['client']['scheme'] . '://';
-			$socket_io_config['path'] .= $nodejs_config['client']['host'] . ':';
-			$socket_io_config['path'] .= $nodejs_config['client']['port'];
+			$socket_io_config['path'] .= $nodejs_config['client']['host'];
+			$socket_io_config['path'] .= ':' . $nodejs_config['client']['port'];
 			$socket_io_config['path'] .= $nodejs_config['resource'];
 			$socket_io_config['path'] .= '/socket.io.js';
 		}

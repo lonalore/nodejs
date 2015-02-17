@@ -21,6 +21,10 @@ if (session_status() == PHP_SESSION_NONE) {
 // Update session in database.
 nodejs_session_db_handler();
 
+register_shutdown_function(array('Nodejs', 'sendMessages'));
+
+$_SESSION['nodejs_config'] = $nodejs_config = nodejs_get_config();
+
 /**
  * User logout listener.
  *

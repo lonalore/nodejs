@@ -115,11 +115,7 @@
   };
 
   $(document).ready(function() {
-    if (!e107Nodejs.Nodejs.socket) {
-      setTimeout(function () {
-        e107Nodejs.Nodejs.connect();
-      }, 1000);
-    }
+    e107Nodejs.Nodejs.connect();
   });
 
 })(jQuery);

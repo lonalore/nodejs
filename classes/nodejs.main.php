@@ -480,7 +480,7 @@ function nodejs_auth_check($message)
 function nodejs_auth_check_callback($auth_token)
 {
 	$sql = e107::getDb();
-	$result = $sql->gen("SELECT uid FROM #nodejs_sessions WHERE MD5(sid) = '" . $auth_token . "' ORDER BY uid DESC LIMIT 1 ");
+	$sql->gen("SELECT uid FROM #nodejs_sessions WHERE MD5(sid) = '" . $auth_token . "' ORDER BY uid DESC LIMIT 1 ");
 
 	$uid = FALSE;
 	while ($row = $sql->fetch()) {
