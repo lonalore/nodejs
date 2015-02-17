@@ -69,7 +69,7 @@ class nodejs_e_header
 		// TODO: Provide ability to exclude paths.
 		$valid_page = true;
 
-		// TODO: Provide ability to exclude anonymous users.
+		// TODO: Provide ability to include anonymous users.
 		if ($authenticated_users_only = true)
 		{
 			$valid_user = USERID > 0;
@@ -125,7 +125,8 @@ class nodejs_e_header
 			}
 		}
 
-		$addonList = e107::getPlugConfig('nodejs')->get('nodejs_addon_list', array());
+		$addonList = e107::getPlugConfig('nodejs')
+										 ->get('nodejs_addon_list', array());
 		foreach ($addonList as $plugin)
 		{
 			if (in_array($plugin, $enabledPlugins))
@@ -137,11 +138,13 @@ class nodejs_e_header
 					e107_require_once($file);
 					$addonClass = $plugin . '_nodejs';
 
-					if (class_exists($addonClass)) {
+					if (class_exists($addonClass))
+					{
 						$addon = new $addonClass();
 
-						if (method_exists($addon, 'jsHandlers')) {
-							$handlers[$plugin] = (array)$addon->jsHandlers();
+						if (method_exists($addon, 'jsHandlers'))
+						{
+							$handlers[$plugin] = (array) $addon->jsHandlers();
 						}
 					}
 				}
