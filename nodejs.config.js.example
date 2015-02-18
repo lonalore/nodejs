@@ -82,7 +82,7 @@ settings = {
     port: 80,
     host: 'yourdomain.com',
     scheme: 'http',
-    basePath: '', // If your e107 is in a subfolder, user this syntax: /my_folder
+    basePath: '', // If your e107 is in a subfolder, use this syntax: /my_folder
     messagePath: '/e107_plugins/nodejs/nodejs.php'
   },
   debug: true,
