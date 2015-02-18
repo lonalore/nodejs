@@ -6,7 +6,7 @@
 
 require_once('../../class2.php');
 
-e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
+e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 
 /**
  * Class NodejsListener.

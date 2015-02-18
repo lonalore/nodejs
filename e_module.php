@@ -8,7 +8,7 @@
  * included in Ajax calls.
  */
 
-e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
+e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 
 // Register events.
 $event = e107::getEvent();

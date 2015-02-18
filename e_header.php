@@ -11,7 +11,7 @@ if (!defined('e107_INIT'))
 }
 
 // Load required main class of plugin.
-e107_require_once(e_PLUGIN . 'nodejs/classes/nodejs.main.php');
+e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 
 /**
  * Class nodejs_e_header.
