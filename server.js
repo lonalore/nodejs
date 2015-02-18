@@ -181,7 +181,7 @@ var sendMessageToBackend = function (message, callback) {
  */
 var authenticateClient = function (client, message) {
   // If the authToken is verified, initiate a connection with the client.
-  if (authenticatedClients[message.authToken]) {
+  if (authenticatedClients[message.authToken] && authenticatedClients[message.authToken].uid > 0) {
     if (settings.debug) {
       console.log('Reusing existing authentication data for key:', message.authToken, ', client id:', client.id);
     }

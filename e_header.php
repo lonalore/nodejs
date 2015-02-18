@@ -69,8 +69,8 @@ class nodejs_e_header
 		// TODO: Provide ability to exclude paths.
 		$valid_page = true;
 
-		// TODO: Provide ability to include anonymous users.
-		if ($authenticated_users_only = true)
+		// TODO: Provide ability to exclude anonymous users.
+		if ($authenticated_users_only = false)
 		{
 			$valid_user = USERID > 0;
 		}
