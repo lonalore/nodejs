@@ -11,7 +11,7 @@
     <category>tools</category>
     <copyright></copyright>
     <adminLinks>
-        <link url="admin_config.php" description="" icon="images/nodejs_32.png" iconSmall="images/nodejs_16.png" primary="true">LAN_CONFIGURE</link>
+        <link url="admin_config.php" description="" icon="images/icon_32.png" iconSmall="images/icon_16.png" primary="true">LAN_CONFIGURE</link>
     </adminLinks>
     <pluginPrefs>
         <pref name='nodejs_protocol'>1</pref>
