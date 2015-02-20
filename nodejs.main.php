@@ -779,7 +779,8 @@ function nodejs_get_config()
  */
 function nodejs_auth_get_token()
 {
-	if (session_status() == PHP_SESSION_NONE)
+	$session_started = session_id() === '' ? FALSE : TRUE;
+	if ($session_started)
 	{
 		session_start();
 	}

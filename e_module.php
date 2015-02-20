@@ -14,7 +14,8 @@ e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 $event = e107::getEvent();
 $event->register('logout', 'nodejs_event_logout_callback');
 
-if (session_status() == PHP_SESSION_NONE) {
+$session_started = session_id() === '' ? FALSE : TRUE;
+if ($session_started) {
   session_start();
 }
 
