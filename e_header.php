@@ -5,13 +5,14 @@
  * files to page header.
  */
 
-if (!defined('e107_INIT'))
+if(!defined('e107_INIT'))
 {
 	exit;
 }
 
 // Load required main class of plugin.
 e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
+
 
 /**
  * Class nodejs_e_header.
@@ -30,11 +31,11 @@ class nodejs_e_header
 	 */
 	function include_components()
 	{
-		if (self::include_components_check())
+		if(self::include_components_check())
 		{
 			$nodejs_config = nodejs_get_config();
 
-			if (isset($nodejs_config['serviceKey']))
+			if(isset($nodejs_config['serviceKey']))
 			{
 				unset($nodejs_config['serviceKey']);
 			}
@@ -47,9 +48,9 @@ class nodejs_e_header
 			e107::js('nodejs', 'js/nodejs.js', 'jquery', 4);
 
 			// Add custom js handlers.
-			foreach (self::get_js_handlers() as $plugin => $files)
+			foreach(self::get_js_handlers() as $plugin => $files)
 			{
-				foreach ($files as $file)
+				foreach($files as $file)
 				{
 					e107::js($plugin, $file, null, 5);
 				}
@@ -70,7 +71,7 @@ class nodejs_e_header
 		$valid_page = true;
 
 		// TODO: Provide ability to exclude anonymous users.
-		if ($authenticated_users_only = false)
+		if($authenticated_users_only = false)
 		{
 			$valid_user = USERID > 0;
 		}
@@ -92,7 +93,7 @@ class nodejs_e_header
 			'path' => false,
 		);
 
-		if (!$socket_io_config['path'])
+		if(!$socket_io_config['path'])
 		{
 			$socket_io_config['path'] = $nodejs_config['client']['scheme'] . '://';
 			$socket_io_config['path'] .= $nodejs_config['client']['host'];
@@ -117,32 +118,32 @@ class nodejs_e_header
 
 		// Get list of enabled plugins.
 		$sql->select("plugin", "*", "plugin_id !='' order by plugin_path ASC");
-		while ($row = $sql->fetch())
+		while($row = $sql->fetch())
 		{
-			if ($row['plugin_installflag'] == 1)
+			if($row['plugin_installflag'] == 1)
 			{
 				$enabledPlugins[] = $row['plugin_path'];
 			}
 		}
 
 		$addonList = e107::getPlugConfig('nodejs')
-										 ->get('nodejs_addon_list', array());
-		foreach ($addonList as $plugin)
+			->get('nodejs_addon_list', array());
+		foreach($addonList as $plugin)
 		{
-			if (in_array($plugin, $enabledPlugins))
+			if(in_array($plugin, $enabledPlugins))
 			{
 				$file = e_PLUGIN . $plugin . '/e_nodejs.php';
 
-				if (is_readable($file))
+				if(is_readable($file))
 				{
 					e107_require_once($file);
 					$addonClass = $plugin . '_nodejs';
 
-					if (class_exists($addonClass))
+					if(class_exists($addonClass))
 					{
 						$addon = new $addonClass();
 
-						if (method_exists($addon, 'jsHandlers'))
+						if(method_exists($addon, 'jsHandlers'))
 						{
 							$handlers[$plugin] = (array) $addon->jsHandlers();
 						}
@@ -154,6 +155,7 @@ class nodejs_e_header
 		return $handlers;
 	}
 }
+
 
 // Class instantiation.
 new nodejs_e_header;

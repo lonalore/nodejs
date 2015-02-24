@@ -14,9 +14,10 @@ e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 $event = e107::getEvent();
 $event->register('logout', 'nodejs_event_logout_callback');
 
-$session_started = session_id() === '' ? FALSE : TRUE;
-if ($session_started) {
-  session_start();
+$session_started = session_id() === '' ? false : true;
+if($session_started)
+{
+	session_start();
 }
 
 // Update session in database.
@@ -32,8 +33,10 @@ $_SESSION['nodejs_config'] = $nodejs_config = nodejs_get_config();
  * @param array $data
  *  The users IP address.
  */
-function nodejs_event_logout_callback($data) {
-  if (isset($_SESSION['nodejs_config']['authToken'])) {
-    $res = nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
-  }
+function nodejs_event_logout_callback($data)
+{
+	if(isset($_SESSION['nodejs_config']['authToken']))
+	{
+		$res = nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
+	}
 }

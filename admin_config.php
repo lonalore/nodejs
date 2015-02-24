@@ -6,7 +6,7 @@
 
 require_once('../../class2.php');
 
-if (!getperms('P'))
+if(!getperms('P'))
 {
 	header('location:' . e_BASE . 'index.php');
 	exit;
@@ -14,6 +14,7 @@ if (!getperms('P'))
 
 // [PLUGINS]/nodejs/languages/[LANGUAGE]/[LANGUAGE]_admin.php
 e107::lan('nodejs', true, true);
+
 
 /**
  * Class nodejs_admin.
@@ -24,28 +25,29 @@ class nodejs_admin extends e_admin_dispatcher
 	protected $modes = array(
 		'main' => array(
 			'controller' => 'nodejs_admin_main_ui',
-			'path' => null,
+			'path'       => null,
 		),
 		'scan' => array(
 			'controller' => 'nodejs_admin_scan_ui',
-			'path' => null,
+			'path'       => null,
 		),
 	);
 
 	protected $adminMenu = array(
 		'main/prefs' => array(
 			'caption' => LAN_AC_NODEJS_01,
-			'perm' => 'P',
+			'perm'    => 'P',
 		),
-		'scan/list' => array(
+		'scan/list'  => array(
 			'caption' => LAN_AC_NODEJS_03,
-			'perm' => 'P',
+			'perm'    => 'P',
 		),
 	);
 
 	protected $menuTitle = LAN_PLUGIN__NODEJS_NAME;
 
 }
+
 
 /**
  * Class nodejs_admin_ui.
@@ -63,45 +65,46 @@ class nodejs_admin_main_ui extends e_admin_ui
 
 	protected $prefs = array(
 		// Node.js server tab.
-		'nodejs_protocol' => array(
-			'title' => LAN_AI_NODEJS_01,
+		'nodejs_protocol'    => array(
+			'title'       => LAN_AI_NODEJS_01,
 			'description' => LAN_AD_NODEJS_01,
-			'type' => 'boolean',
-			'writeParms' => 'enabled=http&disabled=https',
-			'data' => 'int',
-			'tab' => 0,
+			'type'        => 'boolean',
+			'writeParms'  => 'enabled=http&disabled=https',
+			'data'        => 'int',
+			'tab'         => 0,
 		),
-		'nodejs_host' => array(
-			'title' => LAN_AI_NODEJS_02,
+		'nodejs_host'        => array(
+			'title'       => LAN_AI_NODEJS_02,
 			'description' => LAN_AD_NODEJS_02,
-			'type' => 'text',
-			'data' => 'str',
-			'tab' => 0,
+			'type'        => 'text',
+			'data'        => 'str',
+			'tab'         => 0,
 		),
-		'nodejs_port' => array(
-			'title' => LAN_AI_NODEJS_03,
+		'nodejs_port'        => array(
+			'title'       => LAN_AI_NODEJS_03,
 			'description' => LAN_AD_NODEJS_03,
-			'type' => 'number',
-			'data' => 'int',
-			'tab' => 0,
+			'type'        => 'number',
+			'data'        => 'int',
+			'tab'         => 0,
 		),
-		'nodejs_resource' => array(
-			'title' => LAN_AI_NODEJS_04,
+		'nodejs_resource'    => array(
+			'title'       => LAN_AI_NODEJS_04,
 			'description' => LAN_AD_NODEJS_04,
-			'type' => 'text',
-			'data' => 'str',
-			'tab' => 0,
+			'type'        => 'text',
+			'data'        => 'str',
+			'tab'         => 0,
 		),
 		'nodejs_service_key' => array(
-			'title' => LAN_AI_NODEJS_05,
+			'title'       => LAN_AI_NODEJS_05,
 			'description' => LAN_AD_NODEJS_05,
-			'type' => 'text',
-			'data' => 'str',
-			'tab' => 0,
+			'type'        => 'text',
+			'data'        => 'str',
+			'tab'         => 0,
 		),
 	);
 
 }
+
 
 class nodejs_admin_scan_ui extends e_admin_ui
 {
@@ -119,18 +122,18 @@ class nodejs_admin_scan_ui extends e_admin_ui
 		$addonsList = array();
 
 		// Remove Duplicates caused by having both plugin.php AND plugin.xml.
-		foreach ($plugList as $num => $val)
+		foreach($plugList as $num => $val)
 		{
 			$key = basename($val['path']);
 			$pluginList[$key] = $val;
 		}
 
-		foreach ($pluginList as $p)
+		foreach($pluginList as $p)
 		{
 			$p['path'] = substr(str_replace(e_PLUGIN, '', $p['path']), 0, -1);
 			$plugin_path = $p['path'];
 
-			if (is_readable(e_PLUGIN . $plugin_path . '/e_nodejs.php'))
+			if(is_readable(e_PLUGIN . $plugin_path . '/e_nodejs.php'))
 			{
 				$addonsList[] = $plugin_path;
 			}
@@ -148,6 +151,7 @@ class nodejs_admin_scan_ui extends e_admin_ui
 	}
 
 }
+
 
 new nodejs_admin();
 
