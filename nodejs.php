@@ -36,8 +36,8 @@ class NodejsListener
 
 		$message = json_decode($_POST['messageJson'], true);
 
-		$log = e107::getLog();
-		$log->add('NODEJS', $message, E_LOG_INFORMATIVE, '');
+		// $log = e107::getLog();
+		// $log->add('NODEJS', $message, E_LOG_INFORMATIVE, '');
 
 		$this->message_handler($message);
 	}
@@ -103,8 +103,8 @@ class NodejsListener
 
 		$var = $response ? $response : array('error' => 'Not implemented');
 
-		$log = e107::getLog();
-		$log->add('NODEJS', (array) $var, E_LOG_INFORMATIVE, '');
+		// $log = e107::getLog();
+		// $log->add('NODEJS', (array) $var, E_LOG_INFORMATIVE, '');
 
 		header('Content-Type: application/json');
 		echo nodejs_json_encode($var);
