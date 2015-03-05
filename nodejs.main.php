@@ -447,11 +447,15 @@ function nodejs_auth_check($message)
 			$auth_user->channels[] = 'nodejs_user_' . $auth_user->uid;
 
 			// Add custom js handlers.
-			foreach(nodejs_get_custom_channels() as $plugin => $channels)
+			$custom_channels = nodejs_get_custom_channels();
+			if(is_array($custom_channels))
 			{
-				foreach($channels as $channel)
+				foreach($custom_channels as $plugin => $channels)
 				{
-					$auth_user->channels[] = $channel . $auth_user->uid;
+					foreach($channels as $channel)
+					{
+						$auth_user->channels[] = $channel . $auth_user->uid;
+					}
 				}
 			}
 		}
@@ -1819,9 +1823,6 @@ class Nodejs
 		self::initConfig();
 
 		$response = nodejs_http_request(self::$baseUrl . $url, $options);
-
-		$log = e107::getLog();
-		$log->add('NODEJS', (array) $response, E_LOG_INFORMATIVE, '');
 
 		// If a http error occurred, and logging of http errors is enabled, log it.
 		if(isset($response->error))
