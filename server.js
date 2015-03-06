@@ -160,7 +160,8 @@ var sendMessageToBackend = function (message, callback) {
         body: requestBody,
         headers: {
             'Content-Length': Buffer.byteLength(requestBody),
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Host': settings.backend.host
         }
     }
 
