@@ -3,7 +3,7 @@ CREATE TABLE `nodejs_presence` (
 `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The timestamp of when the user came online.',
 UNIQUE KEY `uid` (`uid`),
 KEY `login_time` (`login_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='List of currently online users on a node.js server.';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE `nodejs_sessions` (
 `uid` int(10) unsigned NOT NULL COMMENT 'The users.uid corresponding to a session, or 0 for anonymous user.',
@@ -12,4 +12,4 @@ CREATE TABLE `nodejs_sessions` (
 PRIMARY KEY (`sid`),
 KEY `timestamp` (`timestamp`),
 KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='Session handlers read and write into the...';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
