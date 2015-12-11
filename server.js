@@ -119,7 +119,7 @@ var invokeExtensions = function (hook) {
         }
     }
     return returnValues;
-}
+};
 
 /**
  * Check if the given channel is client-writable.
@@ -129,7 +129,7 @@ var channelIsClientWritable = function (channel) {
         return channels[channel].isClientWritable;
     }
     return false;
-}
+};
 
 /**
  * Returns the backend url.
@@ -137,14 +137,14 @@ var channelIsClientWritable = function (channel) {
 var getBackendUrl = function () {
     return settings.backend.scheme + '://' + settings.backend.host + ':' +
         settings.backend.port + settings.backend.basePath + settings.backend.messagePath;
-}
+};
 
 var getAuthHeader = function () {
     if (settings.backend.httpAuth.length > 0) {
         return 'Basic ' + new Buffer(settings.backend.httpAuth).toString('base64');
     }
     return false;
-}
+};
 
 /**
  * Send a message to the backend.
@@ -163,7 +163,7 @@ var sendMessageToBackend = function (message, callback) {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Host': settings.backend.host
         }
-    }
+    };
 
     if (settings.backend.scheme == 'https') {
         options.strictSSL = settings.backend.strictSSL;
@@ -178,7 +178,7 @@ var sendMessageToBackend = function (message, callback) {
         console.log("Sending message to backend", message, options);
     }
     request.post(options, callback);
-}
+};
 
 /**
  * Authenticate a client connection based on the message it sent.
@@ -196,7 +196,7 @@ var authenticateClient = function (client, message) {
         message.clientId = client.id;
         sendMessageToBackend(message, authenticateClientCallback);
     }
-}
+};
 
 /**
  * Handle authentication call response.
@@ -242,7 +242,7 @@ var authenticateClientCallback = function (error, response, body) {
         console.log('Invalid login for uid "', authData.uid, '"');
         delete authenticatedClients[authData.authToken];
     }
-}
+};
 
 /**
  * Send a presence notifcation for uid.
@@ -262,7 +262,7 @@ var sendPresenceChangeNotification = function (uid, presenceEvent) {
     if (settings.debug) {
         console.log('sendPresenceChangeNotification', uid, presenceEvent, onlineUsers);
     }
-}
+};
 
 /**
  * Callback that wraps all requests and checks for a valid service key.
@@ -274,7 +274,7 @@ var checkServiceKeyCallback = function (request, response, next) {
     else {
         response.send({'error': 'Invalid service key.'});
     }
-}
+};
 
 /**
  * Check a service key against the configured service key.
@@ -285,7 +285,7 @@ var checkServiceKey = function (serviceKey) {
         return false;
     }
     return true;
-}
+};
 
 /**
  * Http callback - return the list of content channel users.
@@ -312,7 +312,7 @@ var getContentTokenUsers = function (request, response) {
             response.send({error: 'Error calling getContentTokenChannelUsers() for channel "' + channel.channel + '", error: ' + exception.toString()});
         }
     });
-}
+};
 
 /**
  * Http callback - set the debug flag.
@@ -334,7 +334,7 @@ var toggleDebug = function (request, response) {
             response.send({error: 'Invalid JSON, error: ' + e.toString()});
         }
     });
-}
+};
 
 /**
  * Http callback - read in a JSON message and publish it to interested clients.
@@ -370,7 +370,7 @@ var publishMessage = function (request, response) {
         process.emit('message-published', message, sentCount);
         response.send({sent: sentCount});
     });
-}
+};
 
 /**
  * Publish a message to clients subscribed to a channel.
@@ -395,7 +395,7 @@ var publishMessageToChannel = function (message) {
         console.log('Sent message to ' + clientCount + ' clients in channel "' + message.channel + '"');
     }
     return clientCount;
-}
+};
 
 /**
  * Publish a message to clients subscribed to a channel.
@@ -434,7 +434,7 @@ var publishMessageToContentChannel = function (request, response) {
         }
         response.send({sent: 'sent'});
     });
-}
+};
 
 /**
  * Publish a message to a specific client.
@@ -527,7 +527,7 @@ var getContentTokenChannelUsers = function (channel) {
         }
     }
     return users;
-}
+};
 
 /**
  * Get the list of Node.js sessionIds for a given uid.
@@ -543,7 +543,7 @@ var getNodejsSessionIdsFromUid = function (uid) {
         console.log('getNodejsSessionIdsFromUid', {uid: uid, sessionIds: sessionIds});
     }
     return sessionIds;
-}
+};
 
 /**
  * Get the list of Node.js sessionIds for a given authToken.
@@ -559,7 +559,7 @@ var getNodejsSessionIdsFromAuthToken = function (authToken) {
         console.log('getNodejsSessionIdsFromAuthToken', {authToken: authToken, sessionIds: sessionIds});
     }
     return sessionIds;
-}
+};
 
 /**
  * Add a user to a channel.
@@ -709,7 +709,7 @@ var removeChannel = function (request, response) {
         console.log("Missing channel");
         response.send({'status': 'failed', 'error': 'Invalid data: missing channel'});
     }
-}
+};
 
 /**
  * Add a channel.
@@ -737,7 +737,7 @@ var addChannel = function (request, response) {
         console.log("Missing channel");
         response.send({'status': 'failed', 'error': 'Invalid data: missing channel'});
     }
-}
+};
 
 /**
  * Checks whether a channel exists.
@@ -764,7 +764,7 @@ var checkChannel = function (request, response) {
         console.log("Missing channel");
         response.send({'status': 'failed', 'error': 'Invalid data: missing channel'});
     }
-}
+};
 
 /**
  * Remove a user from a channel.
@@ -813,7 +813,7 @@ var removeUserFromChannel = function (request, response) {
         console.log("Missing uid or channel");
         response.send({'status': 'failed', 'error': 'Invalid data'});
     }
-}
+};
 
 /**
  * Remove an authToken from a channel.
@@ -860,7 +860,7 @@ var removeAuthTokenFromChannel = function (request, response) {
         console.log("Missing authToken or channel");
         response.send({'status': 'failed', 'error': 'Invalid data'});
     }
-}
+};
 
 /**
  * Remove a client (specified by session ID) from a channel.
@@ -917,7 +917,7 @@ var setUserPresenceList = function (uid, uids) {
     else {
         response.send({'status': 'failed', 'error': 'Invalid parameters.'});
     }
-}
+};
 
 /**
  * Cleanup after a socket has disconnected.
@@ -952,7 +952,7 @@ var cleanupSocket = function (socket) {
     }
 
     delete sockets[socket.id];
-}
+};
 
 /**
  * Check for any open sockets associated with the channel and socket pair.
@@ -987,7 +987,7 @@ var checkTokenChannelStatus = function (tokenChannel, socket) {
     for (var socketId in tokenChannels[tokenChannel].sockets) {
         publishMessageToClient(socketId, message);
     }
-}
+};
 
 /**
  * Check for any open sockets for uid.
@@ -999,7 +999,7 @@ var checkOnlineStatus = function (uid) {
         }
         setUserOffline(uid);
     }
-}
+};
 
 /**
  * Sends offline notification to sockets, the backend and cleans up our list.
@@ -1009,7 +1009,7 @@ var setUserOffline = function (uid) {
     delete onlineUsers[uid];
     sendMessageToBackend({uid: uid, messageType: 'userOffline'}, function (response) {
     });
-}
+};
 
 /**
  * Set a content token.
@@ -1039,19 +1039,23 @@ var setContentToken = function (request, response) {
         }
         response.send({status: 'ok'});
     });
-}
+};
 
 /**
  * Setup a sockets{}.connection with uid, channels etc.
  */
 var setupClientConnection = function (sessionId, authData, contentTokens) {
-    console.log(sockets);
+    if (settings.debug) {
+        console.log(sockets);
+    }
     if (!sockets[sessionId]) {
         console.log("Client socket '" + sessionId + "' went away.");
         //console.log(authData);
         return;
     }
-    console.log("Still there " + sessionId);
+    if (settings.debug) {
+        console.log("Still there " + sessionId);
+    }
     sockets[sessionId].authToken = authData.authToken;
     sockets[sessionId].uid = authData.uid;
     for (var i in authData.channels) {
@@ -1123,7 +1127,9 @@ else {
 var path = '';
 for (var i in extensions) {
     if (extensions[i].hasOwnProperty('routes')) {
-        console.log('Adding route handlers from extension', extensions[i].routes);
+        if (settings.debug) {
+            console.log('Adding route handlers from extension', extensions[i].routes);
+        }
         for (var j = 0; j < extensions[i].routes.length; j++) {
             if (extensions[i].routes[j].auth) {
                 path = settings.baseAuthPath + extensions[i].routes[j].path;
@@ -1143,6 +1149,10 @@ for (var i in extensions) {
 
 server.listen(settings.port, settings.host);
 console.log('Started ' + settings.scheme + ' server.');
+
+if (settings.debug) {
+    console.log(settings);
+}
 
 var io_options = {};
 io_options['transports'] = settings.transports;
