@@ -71,8 +71,6 @@
  * jsEtag: whether to call io.enable('browser client etag').
  *
  * logLevel: the log level to be used by Socket.Io.
- *
- * publishMessageToClientDelay: Delay messages will be send to clients. Microtime.
  */
 settings = {
     scheme: 'http',
@@ -111,6 +109,5 @@ settings = {
     transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling'],
     jsMinification: true,
     jsEtag: true,
-    logLevel: 1,
-    publishMessageToClientDelay: 0
+    logLevel: 1
 };
