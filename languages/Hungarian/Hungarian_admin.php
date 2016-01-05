@@ -15,6 +15,7 @@ define('LAN_AI_NODEJS_02', 'Node.js host');
 define('LAN_AI_NODEJS_03', 'Node.js port');
 define('LAN_AI_NODEJS_04', 'Erőforrás');
 define('LAN_AI_NODEJS_05', 'Service Key');
+define('LAN_AI_NODEJS_06', 'CDN használata a socket.io.js betöltéséhez');
 
 define('LAN_AD_NODEJS_01', 'Node.js szerver eléréséhez szükséges protokol.');
 define('LAN_AD_NODEJS_02', 'Node.js szerver eléréséhez szükséges host.');

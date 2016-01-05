@@ -15,6 +15,7 @@ define('LAN_AI_NODEJS_02', 'Node.js server host');
 define('LAN_AI_NODEJS_03', 'Node.js server port');
 define('LAN_AI_NODEJS_04', 'Resource');
 define('LAN_AI_NODEJS_05', 'Service Key');
+define('LAN_AI_NODEJS_06', 'Use CDN to load socket.io.js');
 
 define('LAN_AD_NODEJS_01', 'The protocol used to communicate with the Node.js server.');
 define('LAN_AD_NODEJS_02', 'The hostname of the Node.js server.');

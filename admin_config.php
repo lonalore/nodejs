@@ -101,6 +101,13 @@ class nodejs_admin_main_ui extends e_admin_ui
 			'data'        => 'str',
 			'tab'         => 0,
 		),
+		'nodejs_socket_cdn' => array(
+			'title'      => LAN_AI_NODEJS_06,
+			'type'       => 'boolean',
+			'writeParms' => 'label=yesno',
+			'data'       => 'int',
+			'tab'        => 0,
+		),
 	);
 
 }

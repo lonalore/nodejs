@@ -20,8 +20,22 @@ e107_require_once(e_PLUGIN . 'nodejs/nodejs.main.php');
 class nodejs_e_header
 {
 
+	/**
+	 * Store forum plugin preferences.
+	 *
+	 * @var array
+	 */
+	private $plugPrefs = array();
+
+
+	/**
+	 * Constructor.
+	 */
 	function __construct()
 	{
+		// Plugin preferences.
+		$this->plugPrefs = e107::getPlugConfig('nodejs')->getPref();
+
 		self::include_components();
 	}
 
@@ -83,7 +97,13 @@ class nodejs_e_header
 			'path' => false,
 		);
 
-		if(!$socket_io_config['path'])
+		$cdn = varset($this->plugPrefs['nodejs_socket_cdn'], 1);
+
+		if((int) $cdn === 1)
+		{
+			$socket_io_config['path'] = 'https://cdn.socket.io/socket.io-1.3.7.js';
+		}
+		elseif(!$socket_io_config['path'])
 		{
 			$socket_io_config['path'] = $nodejs_config['client']['scheme'] . '://';
 			$socket_io_config['path'] .= $nodejs_config['client']['host'];

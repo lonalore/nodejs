@@ -20,5 +20,6 @@
         <pref name='nodejs_resource'>/socket.io</pref>
         <pref name='nodejs_service_key'></pref>
         <pref name='nodejs_log_http_errors'>1</pref>
+        <pref name='nodejs_socket_cdn'>1</pref>
     </pluginPrefs>
 </e107Plugin>
