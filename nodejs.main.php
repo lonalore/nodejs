@@ -651,6 +651,11 @@ function nodejs_user_set_online($uid)
 	} catch(Exception $e)
 	{
 	}
+	finally
+	{
+		$event = e107::getEvent();
+		$event->trigger('nodejs-user-set-online', $uid);
+	}
 }
 
 /**
@@ -666,6 +671,11 @@ function nodejs_user_set_offline($uid)
 		$sql->delete("nodejs_presence", "uid=" . (int) $uid);
 	} catch(Exception $e)
 	{
+	}
+	finally
+	{
+		$event = e107::getEvent();
+		$event->trigger('nodejs-user-set-offline', $uid);
 	}
 }
 
