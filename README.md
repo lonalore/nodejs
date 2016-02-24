@@ -1,5 +1,7 @@
 # Node.js integration with e107 v2
 
+[![Join the chat at https://gitter.im/lonalore/nodejs](https://badges.gitter.im/lonalore/nodejs.svg)](https://gitter.im/lonalore/nodejs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This plugin integrates Node.js with e107 v2. It provides an API that other plugins can use to add realtime capabilities to e107 (v2), specifically enabling pushing updates to open connected clients.
 
 ## Install Node.js
