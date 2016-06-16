@@ -57,8 +57,8 @@ class nodejs_e_header
 			e107::js('settings', array('nodejs' => $nodejs_config));
 
 			$socket_io_config = self::get_socketio_js_config($nodejs_config);
-			e107::js('url', $socket_io_config['path'], null, 2);
-			e107::js('nodejs', 'js/nodejs.js', 'jquery', 4);
+			e107::js('footer', $socket_io_config['path'], null, 2);
+			e107::js('footer', '{e_PLUGIN}nodejs/js/nodejs.js', 'jquery', 4);
 		}
 	}
 
@@ -101,7 +101,7 @@ class nodejs_e_header
 
 		if((int) $cdn === 1)
 		{
-			$socket_io_config['path'] = 'https://cdn.socket.io/socket.io-1.3.7.js';
+			$socket_io_config['path'] = 'https://cdn.socket.io/socket.io-1.4.5.js';
 		}
 		elseif(!$socket_io_config['path'])
 		{

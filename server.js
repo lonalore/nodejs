@@ -51,6 +51,7 @@ var channels = {},
 		transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'],
 		jsMinification: true,
 		jsEtag: true,
+		gzip: true,
 		backend: {
 			host: 'localhost',
 			scheme: 'http',
@@ -1609,6 +1610,10 @@ if(settings.jsEtag)
 if(settings.jsMinification)
 {
 	io_options['browser client minification'] = true;
+}
+if(settings.gzip)
+{
+	io_options['browser client gzip'] = true;
 }
 
 var io = require('socket.io')(server, io_options);
