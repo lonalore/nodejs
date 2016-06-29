@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Class instantiation to prepare JavaScript configurations and include css/js

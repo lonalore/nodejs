@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Provide a listener class to handle all messages from Node.js server.
@@ -77,29 +78,15 @@ class NodejsListener
 
 			default:
 				$handlers = array();
-
-				foreach(self::get_message_handlers() as $plugin => $handler)
-				{
-					if(isset($handler['path']) && isset($handler['function']))
-					{
-						$file = e_PLUGIN . $plugin . '/' . ltrim($handler['path'], '/');
-						e107_require_once($file);
-
-						if(function_exists($handler['function']))
-						{
-							if(is_array($handler['function']($message['messageType'])))
-							{
-								$handlers[] = $handler['function']($message['messageType']);
-							}
-						}
-					}
-				}
+				$handlers += self::get_message_handlers($message['messageType']);
 
 				foreach($handlers as $callback)
 				{
 					$callback($message, $response);
 				}
 		}
+
+		// TODO provides the way to alter response message.
 
 		$var = $response ? $response : array('error' => 'Not implemented');
 
@@ -115,7 +102,7 @@ class NodejsListener
 	/**
 	 * Get a list of message handlers are defined in plugins.
 	 */
-	function get_message_handlers()
+	function get_message_handlers($type)
 	{
 		$sql = e107::getDb();
 
@@ -132,8 +119,7 @@ class NodejsListener
 			}
 		}
 
-		$addonList = e107::getPlugConfig('nodejs')
-			->get('nodejs_addon_list', array());
+		$addonList = e107::getPlugConfig('nodejs')->get('nodejs_addon_list', array());
 		foreach($addonList as $plugin)
 		{
 			if(in_array($plugin, $enabledPlugins))
@@ -151,10 +137,10 @@ class NodejsListener
 
 						if(method_exists($addon, 'msgHandlers'))
 						{
-							$return = $addon->msgHandlers();
+							$return = $addon->msgHandlers($type);
 							if(is_array($return))
 							{
-								$handlers[$plugin] = $return;
+								$handlers[] = $return;
 							}
 						}
 					}
