@@ -109,5 +109,6 @@ settings = {
     transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling', 'polling'],
     jsMinification: true,
     jsEtag: true,
+    gzip: true,
     logLevel: 1
 };
