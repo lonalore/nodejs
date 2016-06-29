@@ -537,9 +537,7 @@ function nodejs_get_custom_channels($auth_user)
 
 						if(is_array($return))
 						{
-							foreach ($return as $channel) {
-								$channels[$plugin] = $channel;
-							}
+							$channels[$plugin] = $return;
 						}
 					}
 				}
