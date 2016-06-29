@@ -20,7 +20,7 @@ class PLUGIN_nodejs
 	 *   the specific extension of the server that sent the message to the e107
 	 *   site. This is set by developers when writing their server extensions.
 	 *
-	 *   As an example, a module implementing this hook, and returning a global
+	 *   As an example, a plugin implementing this method, and returning a global
 	 *   function called "my_plugin_message_handler", will have to implement that
 	 *   function as follows:
 	 *
