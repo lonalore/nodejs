@@ -447,14 +447,14 @@ function nodejs_auth_check($message)
 			$auth_user->channels[] = 'nodejs_user_' . $auth_user->uid;
 
 			// Add custom js handlers.
-			$custom_channels = nodejs_get_custom_channels();
+			$custom_channels = nodejs_get_custom_channels($auth_user);
 			if(is_array($custom_channels))
 			{
 				foreach($custom_channels as $plugin => $channels)
 				{
 					foreach($channels as $channel)
 					{
-						$auth_user->channels[] = $channel . $auth_user->uid;
+						$auth_user->channels[] = $channel;
 					}
 				}
 			}
@@ -498,7 +498,7 @@ function nodejs_auth_check_callback($auth_token)
 /**
  * Get a list of user channels are defined in plugins.
  */
-function nodejs_get_custom_channels()
+function nodejs_get_custom_channels($auth_user)
 {
 	$sql = e107::getDb();
 
@@ -533,11 +533,13 @@ function nodejs_get_custom_channels()
 
 					if(method_exists($addon, 'userChannels'))
 					{
-						$return = $addon->userChannels();
+						$return = $addon->userChannels($auth_user);
 
 						if(is_array($return))
 						{
-							$channels[$plugin] = $return;
+							foreach ($return as $channel) {
+								$channels[$plugin] = $channel;
+							}
 						}
 					}
 				}
