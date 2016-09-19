@@ -60,3 +60,8 @@ As long as you have 'debug: true' in your configuration file, you'll see lots of
 
 A simple test to determine if the plugin is working is to monitor the terminal window or ssh terminal as you broadcast notification messages.
 
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/lonalore/nodejs/badge.svg?style=beer-square)](https://beerpay.io/lonalore/nodejs)  [![Beerpay](https://beerpay.io/lonalore/nodejs/make-wish.svg?style=flat-square)](https://beerpay.io/lonalore/nodejs?focus=wish)
