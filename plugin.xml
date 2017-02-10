@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e107Plugin name="Node.js" lan="LAN_PLUGIN__NODEJS_NAME" version="1.3" date="2016-06-29" compatibility="2.0" installRequired="true">
+<e107Plugin name="Node.js" lan="LAN_PLUGIN__NODEJS_NAME" version="1.4" date="2017-02-10" compatibility="2.0" installRequired="true">
     <author name="Lóna Lore" url="https://github.com/lonalore/nodejs"/>
     <summary lan="LAN_PLUGIN__NODEJS_SUMM">Node.js integration</summary>
     <description lan="LAN_PLUGIN__NODEJS_DESC">It provides an API that other plugins can use to add real-time capabilities to e107, specifically enabling pushing updates to open connected clients.</description>
@@ -22,4 +22,7 @@
         <pref name='nodejs_log_http_errors'>1</pref>
         <pref name='nodejs_socket_cdn'>1</pref>
     </pluginPrefs>
+    <dependencies>
+        <PHP name='core' min_version='5.5.0' />
+    </dependencies>
 </e107Plugin>

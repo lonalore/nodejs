@@ -17,6 +17,7 @@ $event->register('admin_plugin_install', 'nodejs_update_addon_list');
 $event->register('admin_plugin_uninstall', 'nodejs_update_addon_list');
 $event->register('admin_plugin_upgrade', 'nodejs_update_addon_list');
 $event->register('admin_plugin_refresh', 'nodejs_update_addon_list');
+$event->register('system_plugins_table_updated', 'nodejs_update_addon_list');
 
 // Start session.
 $session_started = session_id() === '' ? false : true;
@@ -44,7 +45,7 @@ function nodejs_event_logout_callback($data)
 {
 	if(isset($_SESSION['nodejs_config']['authToken']))
 	{
-		$res = nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
+		nodejs_logout_user($_SESSION['nodejs_config']['authToken']);
 	}
 }
 

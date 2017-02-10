@@ -22,3 +22,10 @@ define('LAN_AD_NODEJS_02', 'The hostname of the Node.js server.');
 define('LAN_AD_NODEJS_03', 'The port of the Node.js server.');
 define('LAN_AD_NODEJS_04', 'http path that the node.js server should respond to. This value needs to match the e107 node.js configuration.');
 define('LAN_AD_NODEJS_05', 'An arbitrary string used as a secret between the node.js server and the e107 site.');
+
+define("LAN_NODEJS_ADMIN_HELP_01", "Help & Support");
+define("LAN_NODEJS_ADMIN_HELP_02", "If you think this plugin is useful and saves you a lot of work, then star it on Github! Thank you!");
+define("LAN_NODEJS_ADMIN_HELP_03", "Please feel free to report any bug found. Pull requests and issues are more than welcome!");
+define("LAN_NODEJS_ADMIN_HELP_04", "Issue");
+define("LAN_NODEJS_ADMIN_HELP_05", "Star");
+define("LAN_NODEJS_ADMIN_HELP_06", "Support on Beerpay");
